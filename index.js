@@ -29,7 +29,19 @@ async function run() {
 
     const database = client.db("electronDB");
     const brandProducts = database.collection("brandProducts");
+    const productAds = database.collection("productAds");
 
+    app.get("/products", async(req, res) => {
+        const cursor = brandProducts.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
+    app.get("/productAds", async(req, res) => {
+        const cursor = productAds.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
     app.post('/product', async (req, res) => {
         const newProduct = req.body;
         const result = await brandProducts.insertOne(newProduct);
