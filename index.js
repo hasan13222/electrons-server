@@ -30,13 +30,14 @@ async function run() {
     const database = client.db("electronDB");
     const brandProducts = database.collection("brandProducts");
     const productAds = database.collection("productAds");
+    const cartProducts = database.collection("cartProducts");
 
     app.get("/products", async(req, res) => {
         const cursor = brandProducts.find();
         const result = await cursor.toArray();
         res.send(result);
     })
-    app.get('/products/:id', async(req, res) => {
+    app.get('/product/:id', async(req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await brandProducts.findOne(query);
@@ -50,6 +51,18 @@ async function run() {
     app.post('/product', async (req, res) => {
         const newProduct = req.body;
         const result = await brandProducts.insertOne(newProduct);
+        res.send(result);
+    })
+    
+    app.get("/carts", async(req, res) => {
+      const cursor = cartProducts.find();
+      const result = await cursor.toArray();
+      res.send(result);
+  })
+
+    app.post('/addToCart', async (req, res) => {
+        const newProduct = req.body;
+        const result = await cartProducts.insertOne(newProduct);
         res.send(result);
     })
 
