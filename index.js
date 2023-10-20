@@ -65,6 +65,16 @@ async function run() {
       res.send(result);
     });
 
+    app.patch('/product/update/:id', async(req, res) => {
+      const id = req.params.id;
+      const updatedProduct = {
+          $set: req.body
+      }
+      const query = { _id: new ObjectId(id)};
+      const result = await brandProducts.updateOne(query, updatedProduct);
+      res.send(result);
+  })
+
     app.delete('/cart/:id', async(req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id)};
